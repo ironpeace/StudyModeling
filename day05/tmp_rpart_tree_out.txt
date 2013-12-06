@@ -1,0 +1,16 @@
+n= 27826 
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+ 1) root 27826 1955 no (0.92974197 0.07025803)  
+   2) poutcome=failure,other,unknown 27599 1882 no (0.93180912 0.06819088)  
+     4) age< 60.5 27432 1825 no (0.93347186 0.06652814)  
+       8) marital=married 16724  923 no (0.94480985 0.05519015)  
+        16) education=primary,secondary,unknown 12656  629 no (0.95030025 0.04969975) *
+        17) education=tertiary 4068  294 no (0.92772861 0.07227139) *
+       9) marital=divorced,single 10708  902 no (0.91576391 0.08423609)  
+        18) age>=29.5 8677  666 no (0.92324536 0.07675464) *
+        19) age< 29.5 2031  236 no (0.88380108 0.11619892) *
+     5) age>=60.5 167   57 no (0.65868263 0.34131737) *
+   3) poutcome=success 227   73 no (0.67841410 0.32158590) *
