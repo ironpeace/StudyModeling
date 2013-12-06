@@ -124,6 +124,30 @@ abline(lmB03, lwd=1, lty=1, col="red")
 
 
 
+library(car)
+?Duncan
+data(Duncan)
+str(Duncan)
+head(Duncan)
+summary(Duncan)
+
+plot(Duncan$income, Duncan$education)
+plot(Duncan$income, Duncan$prestige)
+
+cor(Duncan[, -1])
+
+#type別のincome分布
+aggregate(Duncan$income, list(Duncan$type), summary)
+
+#箱ひげ図
+boxplot(Duncan$income)
+boxplot(Duncan$income ~ Duncan$type)
+
+
+
+
+
+
 
 
 
