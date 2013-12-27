@@ -105,7 +105,7 @@ exp(logit01$coefficients[2])
 
 
 
-plot(Test1220$gre, Test1220$admit, xlim=c(200,800), yliim=c(0,1)) $range
+plot(Test1220$gre, Test1220$admit, xlim=c(200,800), ylim=c(0,1)) #range
 par(new=T)
 plot(Test1220$gre, Test1220$AProb, 
   pch=20, col="green", xlab="", ylab="",
@@ -115,6 +115,7 @@ prflgre$LOdds <- log(prflgre$AdmtPrcnt / (100 - prflgre$AdmtPrcnt))
 
 greMedian <- aggregate(Test1220$gre, list(Test1220$GRECut), median)
 
+
 prflgre2 <- cbind(prflgre, greMedian)
 
 lmOdds <- lm(prflgre$LOdds ~ prflgre2$x, data=prflgre2)
@@ -122,4 +123,5 @@ lmOdds <- lm(prflgre$LOdds ~ prflgre2$x, data=prflgre2)
 plot(prflgre2$x, prflgre2$LOdds)
 abline(lmOdds, lwd=1, lty=1, col="red")
 
-
+# 線形性をチェック
+# 赤ラインに沿っているので、Logitにgraは含めてOKと判断
