@@ -63,5 +63,23 @@ abline(lmOdds, lwd=1, lty=1, col="red")
 # 赤ラインから離れているので、Logitにgpaは含めるべきでないと判断
 
 
+#logit gre : 0.003582
+#logit gpa : 1.051109
+
+
+logit03 <- glm(admit ~ gpa + gre, data=Test1227, family="binomial")
+
+logit03$coefficients
+
+# モデルの回帰式
+# 合格率 = 1 / (1 + exp(-(-4.949378063 + 0.754686856 * gra + 0.002690684 * gre)))
+
+#logit01 gre : 0.003582
+#logit02                    gpa : 1.051109
+#logit03 gre : 0.002690684  gpa : 0.754686856
+
+# logit01と02の、それぞれのβと、03のβの大きさ関係が大きく変わらないから、03はOK
+
+
 
 
