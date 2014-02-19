@@ -96,6 +96,9 @@ summary(train$f471)
 plot(train$f471, train$loss)
 
 
+# 説明変数を削減する
+
+
 
 
 

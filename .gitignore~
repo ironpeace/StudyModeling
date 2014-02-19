@@ -1,5 +1,3 @@
-/kaggle/sampleSubmission.csv
-/kaggle/train_v2.csv.zip
-/kaggle/train_v2.csv
-/kaggle/test_v2.csv.zip
-/kaggle/test_v2.csv
+/kaggle/*.zip
+/kaggle/*.csv
+/kaggle/*.RData
