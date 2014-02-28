@@ -132,6 +132,13 @@ pdf("f16_hist_under12M.pdf", paper="a4")
 hist(subset_f16_under12M$f16)
 dev.off()
 
+#反比例っぽかったので、logとってみる
+slimtrain$f16_log <- log(slimtrain$f16 + 1)
+plot(slimtrain$f16_log, slimtrain$loss)
+#線形になっていなくもない
+cor(slimtrain$f16_log, slimtrain$loss, use="pairwise.complete.obs")
+#やっぱり相関は低い
+
 
 # f211について調査~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 summary(slimtrain$f211)
@@ -452,5 +459,80 @@ for(rv in allvars) {
   r <- r + 1
 }
 
+# これだけでいいみたい．．．．orz
+# mtx <- cor(slimtrain, use = "pairwise.complete.obs")
+
 write.csv(cor_matrix, "cor_matrix.csv")
-  
+
+
+
+# ~~~~~~ f54
+sum(slimtrain$f54 == 0, na.rm=TRUE)
+# 0は９件だけなので無視してよさそう
+slimtrain$f54_flg <- ifelse(slimtrain$f54 < 0, 0, 1)
+hist(slimtrain$f54_flg)
+plot(slimtrain$f54_flg, slimtrain$loss)
+
+summary(slimtrain$loss[slimtrain$f54_flg == 1])
+summary(slimtrain$loss[slimtrain$f54_flg == 0])
+
+slimtrain$f57_minus_61 <- slimtrain$f57 - slimtrain$f61
+plot(slimtrain$f57_minus_61, slimtrain$loss)
+
+slimtrain$f57_plus_61 <- slimtrain$f57 + slimtrain$f61
+plot(slimtrain$f57_plus_61, slimtrain$loss)
+
+# f57_minus_61 の方が特徴がありそう
+
+plot(slimtrain$gold, slimtrain$loss)
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+library(rpart)
+library(partykit)
+
+date()
+slimtrain.tree01 <- rpart(loss~., data=slimtrain, maxdepth=3, cp=-1)
+date()
+
+plot(as.party(slimtrain.tree01))
+
+slimtrain$loss01 <- ifelse(slimtrain$loss == 0, 0, 1)
+slimtrain2 <- slimtrain
+slimtrain2$loss = NULL
+
+date()
+# as.factor と入れるとカテゴリー扱いになる
+slimtrain2.tree02 <- rpart(as.factor(loss01)~., data=slimtrain2, maxdepth=3, cp=-1)
+date()
+
+plot(as.party(slimtrain2.tree02))
+
+RES <- predict(slimtrain2.tree02, newdata=slimtrain)
+zero_one <- ifelse(RES[,2]>0.5,1,0)
+mean(abs(zero_one - slimtrain$loss))
+# 0.7667036
+
+date()
+test <- read.csv("test_v2.csv")
+date()
+# 12分くらいかかる
+
+test$gold <- test$f527 - test$f528
+test$f16_log <- log(test$f16 + 1)
+test$f54_flg <- ifelse(test$f54 < 0, 0, 1)
+
+test$f57_minus_61 <- test$f57 - test$f61
+test$f57_plus_61 <- test$f57 + test$f61
+
+
+
+date()
+RES.test <- predict(slimtrain2.tree02, newdata=test)
+date()
+# 4分程度かかる
+
+
+
